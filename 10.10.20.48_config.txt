@@ -1,9 +1,8 @@
-
 Building configuration...
 
-Current configuration : 6814 bytes
+Current configuration : 7722 bytes
 !
-! Last configuration change at 11:39:51 UTC Thu Feb 25 2021 by cisco
+! Last configuration change at 12:35:51 UTC Thu Feb 25 2021 by developer
 !
 version 16.11
 service timestamps debug datetime msec
@@ -18,6 +17,22 @@ hostname csr1000v-1
 boot-start-marker
 boot-end-marker
 !
+!
+vrf definition akbarPod
+ description akbarPod VRF
+ rd 1:178
+!
+vrf definition blue
+ description Blue VRF
+ rd 1:410
+!
+vrf definition green
+ description Green VRF
+ rd 1:420
+!
+vrf definition red
+ description Red VRF
+ rd 1:400
 !
 no logging console
 enable secret 9 $9$4fdKs44VXjq2x.$Zahb8Zy6RQwM9ONMvWkNq4k3igSv4v2KkH/uUuqr09s
@@ -180,6 +195,34 @@ redundancy
 ! 
 !
 !
+interface Loopback178
+ description Pod Number 178
+ ip address 10.111.178.1 255.255.255.255
+!
+interface Loopback1178
+ description Pod Number 178
+ ip address 10.111.178.2 255.255.255.255
+!
+interface Loopback11178
+ description Pod Number 11178
+ vrf forwarding red
+ no ip address
+!
+interface Loopback12178
+ description Pod Number 12178
+ vrf forwarding blue
+ no ip address
+!
+interface Loopback13178
+ description Pod Number 13178
+ vrf forwarding green
+ no ip address
+!
+interface Loopback14178
+ description Pod Number 14178
+ vrf forwarding akbarPod
+ no ip address
+!
 interface GigabitEthernet1
  description MANAGEMENT INTERFACE - DON'T TOUCH ME
  ip address 10.10.20.48 255.255.255.0
@@ -242,6 +285,11 @@ line vty 0 4
  login local
  transport input ssh
 !
+ntp server 10.11.178.65
+ntp server 10.12.178.65
+ntp server 10.13.178.65
+ntp server 10.14.178.65
+ntp server 10.111.178.66
 !
 !
 !
